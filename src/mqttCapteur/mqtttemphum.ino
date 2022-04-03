@@ -7,25 +7,27 @@ uint8_t loopCnt = 0;
 Adafruit_Si7021 sensor = Adafruit_Si7021();
 
 EspMQTTClient client(
-  "tom",
-  "noncestfaux",
+  "Livebox-FC40",
+  "jJ5nqDP5VGDzJ6bheQ",
   "194.199.227.239",  // MQTT Ip
-  "",   // Can be omitted if not needed
-  "",   // Can be omitted if not needed
+  "",   
+  "",   
   "ESP32-Tom",     // Client name 
   1883              // MQTT port
 );
   
-
-
-void setup()
-{
+int setupSi7021(){
   if (!sensor.begin()) {
     Serial.println("Did not find Si7021 sensor!");
     while (true)
-      ;
+      return -1;;
   }
-  
+  return 0; 
+}
+
+void setup()
+{
+ 
   Serial.begin(115000);
   client.enableLastWillMessage("TestClient/lastwill", "I am going offline");
   onConnectionEstablished();
