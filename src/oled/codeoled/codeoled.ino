@@ -65,14 +65,13 @@ int capteurMenu() {
   actualMenu = 2;
   //nbCapt=scanCapteur();
   int nbCapt=1;
+  char charCapt = nbCapt;
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.println(F("Capteurs disponible")); 
+  display.println(F(" Capteurs disponible")); 
   display.setTextSize(2); 
   display.setCursor(50, 10);
-  display.println((char)nbCapt); 
-  
-  //display.println(F(nbCapt)); 
+  //display.println(F(charCapt)); 
   display.display();
   delay(100);
   return 0;
@@ -95,11 +94,13 @@ void setup() {
   delay(1000);
   capteurMenu();
   delay(1000);
-  scanCapteur(); 
+  int nbc = scanCapteur(); 
+  Serial.println(nbc);
 }
 
 void loop() {
+  delay(10000);
+  int nbc = scanCapteur(); 
+  Serial.println(nbc);
 
 }
-
-
