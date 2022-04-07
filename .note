@@ -1,0 +1,12 @@
+
+Librairie installer :
+
+Wire
+Adafruitsi7021
+MQTTPubSubClient
+
+
+Minicom : 
+
+
+minicom -b 9600 -o -D /dev/ttyUSB0
