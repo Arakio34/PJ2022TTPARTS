@@ -13,28 +13,16 @@ int setupSi7021(){
   return 0; 
 }
 
-
-void setupMqtt(EspMQTTClient * client)
-{ 
-  client->enableLastWillMessage("TestClient/lastwill", "I am going offline");
-  Serial.println("Sucess mqtt");
-}
-
-
-int sendData(const char * topic, double data,EspMQTTClient * client)
+int sendData(const char * topic, double data,MQTTPubSubClient * client)
 {
   client->publish(topic, (String)data); 
 }	
 
-int sendDataHT(const char * topicH, const char * topicT,EspMQTTClient * client)
+int sendDataHT(const char * topicH, const char * topicT,MQTTPubSubClient * client)
 {
   double humidity = sensor.readHumidity();
   double temperature = sensor.readTemperature();
-  if(client->publish(topicT, (String)temperature)!=0)
-  {
-	  Serial.println("jpp");
-  } 
-
+  client->publish(topicT, (String)temperature);
   client->publish(topicH, (String)humidity); 
 } 
 
@@ -42,17 +30,17 @@ void onConnectionEstablished()
 {
 }
 
-void loopData(EspMQTTClient * client)
+void loopData(MQTTPubSubClient * client)
 {
-for(;;)
-{
-	sendDataHT("humi","temp",client);
-	sendData("co2",readCO2(),client);
-	delay(2000);
-	client->loop();
+	for(;;)
+	{
+		client->update();
+		sendDataHT("humi","temp",client);
+		sendData("co2",readCO2(),client);
+		delay(1000);
+	}
 }
-}
-
+// Récolte la données de Co2
 int readCO2() 
 { 
   int co2Addr = 0x68; 
