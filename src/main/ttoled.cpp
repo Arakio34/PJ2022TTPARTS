@@ -36,6 +36,7 @@ if(!display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
 
 int creditMenu(Adafruit_SSD1306 * display){
   display->clearDisplay();
+  delay(500);
   display->setCursor(0, 0);
   display->println(F("Project done by :"));
   display->setCursor(0, 10);
@@ -50,6 +51,7 @@ int creditMenu(Adafruit_SSD1306 * display){
 int mainMenu(Adafruit_SSD1306 * display){
   actualMenu = 1;
   display->clearDisplay();
+  delay(500);
   display->setCursor(0, 0);
   display->println(F("Boitier modulaire"));
   display->setCursor(0, 10);
@@ -65,6 +67,7 @@ int mainMenu(Adafruit_SSD1306 * display){
 int sensorMenu(Adafruit_SSD1306 * display) {
   actualMenu = 0;
   display->clearDisplay();
+  delay(500);
   display->setCursor(0, 0);
   display->println(F(" Capteurs disponible")); 
   display->setCursor(0, 10);
@@ -74,11 +77,6 @@ int sensorMenu(Adafruit_SSD1306 * display) {
   display->display();
   delay(100);
   return 0;
-}
-// Retourne le menu actuel
-int fctActualMenu()
-{
-	return actualMenu;
 }
 
 //Menu actualisation pour regeler la frequence de recuperation des données. 
@@ -112,4 +110,8 @@ void changeMenu(int id, Adafruit_SSD1306 * display){
 			break;
 	}
 
+}
+int fctActualMenu()
+{
+	return actualMenu;
 }

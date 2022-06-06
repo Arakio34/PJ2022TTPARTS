@@ -29,11 +29,11 @@ int  mainMenu(Adafruit_SSD1306 * display);
 //Menu catpeur du boitier.
 int sensorMenu(Adafruit_SSD1306 * display);
 
-int fctActualMenu();
-
 //Menu actualisation pour regeler la frequence de recuperation des données. 
 int rateMenu(Adafruit_SSD1306 * display);
 
 void changeMenu(int id, Adafruit_SSD1306 * display);
+
+int fctActualMenu();
 
 #endif

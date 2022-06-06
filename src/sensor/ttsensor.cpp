@@ -1,14 +1,13 @@
-#include <Wire.h> 
+#include <Arduino.h>
+#include "ttsensor.h"
 
-int co2Addr = 0x68; 
-
-void setup() { 
-  Serial.begin(9600); 
-  Wire.begin (); 
-} 
-
+int sendData(const char * topic, double data)
+{
+  client.publish(topic, (String)data); 
+}	
 int readCO2() 
 { 
+  int co2Addr = 0x68; 
   int co2_value = 0;  // Store the CO2 value inside this variable. 
 
   Wire.beginTransmission(co2Addr); 
@@ -56,19 +55,3 @@ int readCO2()
     return 0; 
   } 
 } 
-
-void loop() { 
- 
-  int co2Value = readCO2(); 
-  if (co2Value > 0) 
-  { 
-    Serial.print("CO2 Value: "); 
-    Serial.println(co2Value); 
-  } 
-  else 
-  { 
-    Serial.println("Checksum failed / Communication failure"); 
-  } 
-  delay(2000); 
-} 
- 
