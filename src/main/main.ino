@@ -9,6 +9,20 @@
 #include "ttsensor.h"
 #include "ttbutton.h"
 
+
+#define uS_TO_S_FACTOR 1000000ULL 
+#define TIME_TO_SLEEP  5 
+// #define TIME_TO_SLEEP  5 * 60
+
+
+
+
+/////////////////////////////////
+void fctPrincipal();
+/////////////////////////////////
+
+
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 const char* ssid = "tominator";
 const char* pass = "TOMVALERIEERIC0";
@@ -21,7 +35,11 @@ struct bValue buttons;
 
 void setup() 
 {
+
+
+
   Serial.begin(9600);
+  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
 ///////////////////////////////////////////////////////////////////////////
 
     WiFi.begin(ssid, pass);
@@ -52,47 +70,55 @@ void setup()
   delay(2000);
   mainMenu(&display);
   setupButton(&buttons,19,18,5);
+ 	fctPrincipal();
+	// Going to sleep
+	esp_deep_sleep_start();
 }
-
-void loop() 
+void fctPrincipal() 
 {
-int change = 0;
-if(state == 0)
-{
-	readbValue(&buttons);
-	int actualMenu=fctActualMenu();
-	if(change == 0 && buttons.vleft == 1)
+int close = 0;
+while(close == 0){
+	int change = 0;
+	if(state == 0)
 	{
-		if(actualMenu-1 < 0)
+		readbValue(&buttons);
+		int actualMenu=fctActualMenu();
+		if(change == 0 && buttons.vleft == 1)
 		{
-			changeMenu(2,&display);	
-			change = 1;
-		}
-		else
+			if(actualMenu-1 < 0)
+			{
+				changeMenu(2,&display);	
+				change = 1;
+			}
+			else
+			{
+				changeMenu(actualMenu-1,&display);
+				change = 1;
+			}
+		}	
+		if(change == 0 && buttons.vright == 1)
 		{
-			changeMenu(actualMenu-1,&display);
-			change = 1;
-		}
-	}	
-	if(change == 0 && buttons.vright == 1)
-	{
-		if(actualMenu+1 > 2)
+			if(actualMenu+1 > 2)
+			{
+				changeMenu(0,&display);	
+				change = 1;
+			}
+			else
+			{
+				changeMenu(actualMenu+1,&display);
+				change = 1;
+			}
+		}	
+		if(buttons.vok == 1)
 		{
-			changeMenu(0,&display);	
-			change = 1;
-		}
-		else
-		{
-			changeMenu(actualMenu+1,&display);
-			change = 1;
-		}
-	}	
-	if(buttons.vok == 1)
-	{
-		if(actualMenu == 0)
-		{
-			loopData(&mqtt);
-		}
-	}	
+			if(actualMenu == 0)
+			{
+				loopData(&mqtt);
+				close = 1;
+			}
+		}	
+	}
+	}
 }
+void loop(){
 }

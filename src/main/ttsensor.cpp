@@ -32,7 +32,8 @@ void onConnectionEstablished()
 
 void loopData(MQTTPubSubClient * client)
 {
-	for(;;)
+	int i;
+	for(i=0;i<10;i++)
 	{
 		client->update();
 		sendDataHT("humi","temp",client);
