@@ -24,8 +24,8 @@ void fctPrincipal();
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-const char* ssid = "tominator";
-const char* pass = "TOMVALERIEERIC0";
+const char* ssid = "Net-Anakin";
+const char* pass = "Leon2020";
 
 WiFiClient client;
 MQTTPubSubClient mqtt;
@@ -35,8 +35,6 @@ struct bValue buttons;
 
 void setup() 
 {
-
-
 
   Serial.begin(9600);
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
